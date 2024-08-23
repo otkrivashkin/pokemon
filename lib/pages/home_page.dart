@@ -30,8 +30,32 @@ Widget _buildUI(BuildContext context) {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [],
+        children: [_pokemonList(context)],
       ),
     ),
   ));
+}
+
+Widget _pokemonList(BuildContext context) {
+  return SizedBox(
+    width: MediaQuery.sizeOf(context).width,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'All Pokemons',
+          style: TextStyle(fontSize: 25),
+        ),
+        SizedBox(
+          height: MediaQuery.sizeOf(context).height * 0.6,
+          child: ListView.builder(
+              itemCount: 0,
+              itemBuilder: (context, index) {
+                return ListTile();
+              }),
+        )
+      ],
+    ),
+  );
 }
