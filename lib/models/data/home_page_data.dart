@@ -1,4 +1,4 @@
-import 'pokemon/pokemon_list_data.dart';
+import '../pokemon/pokemon_list_data.dart';
 
 class HomePageData {
   PokemonListData? data;
