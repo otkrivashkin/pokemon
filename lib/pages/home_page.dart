@@ -15,8 +15,30 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  final ScrollController _pokemonListScrollController = ScrollController();
   late HomePageController _homePageController;
   late HomePageData _homePageData;
+
+  @override
+  void initState() {
+    super.initState();
+    _pokemonListScrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _pokemonListScrollController.removeListener(_scrollListener);
+    _pokemonListScrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollListener() {
+    if (_pokemonListScrollController.offset >=
+            _pokemonListScrollController.position.maxScrollExtent * 1 &&
+        !_pokemonListScrollController.position.outOfRange) {
+      _homePageController.loadData();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,18 +54,18 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget _buildUI(BuildContext context) {
     return SafeArea(
         child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.sizeOf(context).width,
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.sizeOf(context).width * 0.02,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [_pokemonList(context)],
-            ),
-          ),
-        ));
+      child: Container(
+        width: MediaQuery.sizeOf(context).width,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.sizeOf(context).width * 0.02,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [_pokemonList(context)],
+        ),
+      ),
+    ));
   }
 
   Widget _pokemonList(BuildContext context) {
@@ -60,10 +82,14 @@ class _HomePageState extends ConsumerState<HomePage> {
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.6,
             child: ListView.builder(
+                controller: _pokemonListScrollController,
                 itemCount: _homePageData.data?.results?.length ?? 0,
                 itemBuilder: (context, index) {
-                  PokemonListResult pokemon = _homePageData.data!.results![index];
-                  return PokemonListTile(pokemonUrl: pokemon.url!,);
+                  PokemonListResult pokemon =
+                      _homePageData.data!.results![index];
+                  return PokemonListTile(
+                    pokemonUrl: pokemon.url!,
+                  );
                 }),
           )
         ],
@@ -71,5 +97,3 @@ class _HomePageState extends ConsumerState<HomePage> {
     );
   }
 }
-
-
