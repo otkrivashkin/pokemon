@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pokemon_app/pages/home_page.dart';
+import 'package:get_it/get_it.dart';
+import 'package:pokemon_app/services/http_service.dart';
 
-void main() {
+Future<void> _initServices() async {
+  GetIt.instance.registerSingleton<HttpService>(HttpService());
+}
+
+Future<void> main() async {
+  await _initServices();
   runApp(const MyApp());
 }
 
