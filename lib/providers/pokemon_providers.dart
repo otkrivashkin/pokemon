@@ -41,7 +41,7 @@ class FavoritePokemonsProvider extends StateNotifier<List<String>> {
   }
 
   void removeFavoritePokemon(String url) {
-    state = state.where((url) => url != url).toList();
+    state = state.where((rec) => rec != url).toList();
     _databaseService.saveList(FAVORITE_POKEMON_LIST_KEY, state);
   }
 }
